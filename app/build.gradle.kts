@@ -53,7 +53,6 @@ android {
 }
 
 dependencies {
-    val nav_version = "2.7.7"
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -73,22 +72,22 @@ dependencies {
     implementation(libs.androidx.core.ktx)
 
     // Compose Navigation
-    implementation("androidx.navigation:navigation-compose:$nav_version")
+    implementation(libs.androidx.navigation.compose)
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
-    implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.firebase:firebase-storage")
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.storage)
 
     // Room
-    annotationProcessor("androidx.room:room-compiler:2.6.1")
-    implementation("androidx.room:room-runtime:2.6.1")
-    implementation("androidx.room:room-ktx:2.6.1")
+    annotationProcessor(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
 
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
+    implementation(libs.androidx.lifecycle.runtime.compose)
 
     // Splash Screen
-    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation(libs.androidx.core.splashscreen)
 
     // Mongo DB Realm
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt") {
@@ -100,24 +99,27 @@ dependencies {
     implementation(libs.library.sync)
 
     // Dagger Hilt
-    implementation("com.google.dagger:hilt-android:2.51")
-    ksp("com.google.dagger:hilt-android-compiler:2.51")
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     // Google Auth
 //    implementation(libs.play.services.auth)
 
     // Coil
-    implementation("io.coil-kt:coil-compose:2.6.0")
+    implementation(libs.coil.compose)
 
      // Pager
 //    implementation("com.google.accompanist-pager:0.27.0")
 
     // Date-Time Picker
-    implementation("com.github.stevdza-san:MessageBarCompose:1.0.5")
+    implementation(libs.datetime)
 
     // Messages Bar Compose
-    implementation("com.github.stevdza-san:OneTapCompose:1.0.0")
+    implementation(libs.messagebarcompose)
+
+    // One-Tap Compose
+    implementation(libs.onetapcompose)
 
      // Desugar JDK
     coreLibraryDesugaring(libs.desugar.jdk.libs)
