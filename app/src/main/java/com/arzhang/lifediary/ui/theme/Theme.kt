@@ -90,7 +90,6 @@ private val DarkColors = darkColorScheme(
     onBackground = Color(0xFF1C1B1F),
     onSurface = Color(0xFF1C1B1F),
     */
-)
 
 @Composable
 fun LifeDiaryTheme(
