@@ -12,7 +12,7 @@ import androidx.navigation.navArgument
 import com.arzhang.lifediary.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
 
 @Composable
-fun setUpNavGraph(
+fun SetUpNavGraph(
     startDestination: String,
     navController: NavHostController
 ) {
