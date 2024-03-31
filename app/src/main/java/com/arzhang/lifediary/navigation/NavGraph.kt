@@ -9,6 +9,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.arzhang.lifediary.presentation.screens.auth.AuthenticationScreen
 import com.arzhang.lifediary.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
 
 @Composable
@@ -18,22 +19,24 @@ fun SetUpNavGraph(
 ) {
     NavHost(navController = navController, startDestination = startDestination) {
         authenticationRoute()
-        homeScreen()
-        writeScreen()
+        homeScreenRoute()
+        writeScreenRoute()
     }
 }
 
 fun NavGraphBuilder.authenticationRoute() {
     composable(route = Screen.Authentication.route) {
+        AuthenticationScreen(loadingState = false) {
 
+        }
     }
 }
-fun NavGraphBuilder.homeScreen() {
+fun NavGraphBuilder.homeScreenRoute() {
     composable(route = Screen.Home.route) {
 
     }
 }
-fun NavGraphBuilder.writeScreen() {
+fun NavGraphBuilder.writeScreenRoute() {
     composable(
         route = Screen.Write.route,
         arguments = listOf(navArgument(name = WRITE_SCREEN_ARGUMENT_KEY) {

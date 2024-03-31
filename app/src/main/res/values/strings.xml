@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">LifeDiary</string>
+    <string name="auth_subtitle">لطفا وارد اکانت خود شوید.</string>
+    <string name="auth_title">خوش آمدید.</string>
 </resources>
