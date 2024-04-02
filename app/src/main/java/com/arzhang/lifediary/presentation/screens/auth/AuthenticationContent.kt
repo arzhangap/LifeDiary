@@ -60,7 +60,7 @@ fun AuthenticationContent(
             ) {
                 GoogleButton(
                     loadingState = loadingState,
-                    onClick = onButtonClicked
+                    onClick =  onButtonClicked
                 )
             }
         }

@@ -103,9 +103,6 @@ dependencies {
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
-    // Google Auth
-//    implementation(libs.play.services.auth)
-
     // Coil
     implementation(libs.coil.compose)
 

@@ -18,11 +18,9 @@ librarySync = "1.0.2"
 lifecycleRuntimeCompose = "2.7.0"
 activityCompose = "1.8.2"
 composeBom = "2024.03.00"
-messagebarcompose = "1.0.5"
 messagebarcomposeVersion = "1.0.5"
 navigationCompose = "2.7.7"
-onetapcompose = "1.0.0"
-onetapcomposeVersion = "1.0.12"
+onetapcomposeVersion = "1.0.7"
 roomCompiler = "2.6.1"
 
 [libraries]
