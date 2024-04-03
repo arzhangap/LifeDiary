@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import com.arzhang.lifediary.util.Constants.CLIENT_ID
 import com.stevdzasan.messagebar.ContentWithMessageBar
 import com.stevdzasan.messagebar.MessageBarState
@@ -15,13 +16,17 @@ import java.lang.Exception
 @Composable
 fun AuthenticationScreen(
     loadingState: Boolean,
+    loggedInState: Boolean,
     messageBarState: MessageBarState,
     oneTapSignInState: OneTapSignInState,
-    onButtonClicked: () -> Unit
+    onButtonClicked: () -> Unit,
+    onTokenReceived: (String) -> Unit,
+    onDialogDismissed: (String) -> Unit,
+    navigateToHome: () -> Unit
 ) {
     Scaffold(
         content = {
-            ContentWithMessageBar(messageBarState = messageBarState) {
+            ContentWithMessageBar(messageBarState = messageBarState, successMaxLines = 2) {
                 AuthenticationContent(
                     loadingState = loadingState,
                     onButtonClicked = onButtonClicked
@@ -33,12 +38,14 @@ fun AuthenticationScreen(
         state = oneTapSignInState,
         clientId = CLIENT_ID,
         onTokenIdReceived = { tokenId ->
-            Log.d("login", tokenId)
-            messageBarState.addSuccess("با موفقیت وارد شدید")
+            onTokenReceived(tokenId)
         },
         onDialogDismissed = { message ->
-            Log.d("login", message)
-            messageBarState.addError(Exception("ورود ناموفق"))
+            onDialogDismissed(message)
         }
     )
+
+    LaunchedEffect(key1 = loggedInState) {
+        if(loggedInState) navigateToHome()
+    }
 }
