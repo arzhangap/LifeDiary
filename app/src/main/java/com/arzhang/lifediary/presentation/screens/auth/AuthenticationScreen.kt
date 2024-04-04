@@ -1,16 +1,19 @@
 package com.arzhang.lifediary.presentation.screens.auth
 
 import android.annotation.SuppressLint
-import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Modifier
 import com.arzhang.lifediary.util.Constants.CLIENT_ID
 import com.stevdzasan.messagebar.ContentWithMessageBar
 import com.stevdzasan.messagebar.MessageBarState
 import com.stevdzasan.onetap.OneTapSignInState
 import com.stevdzasan.onetap.OneTapSignInWithGoogle
-import java.lang.Exception
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -25,6 +28,13 @@ fun AuthenticationScreen(
     navigateToHome: () -> Unit
 ) {
     Scaffold(
+        modifier = Modifier
+            // to set color correctly on bar ( needed because of padding)
+            .background(MaterialTheme.colorScheme.surface)
+            // set paddings to avoid overlap of transparent bar
+            .statusBarsPadding()
+            .navigationBarsPadding()
+        ,
         content = {
             ContentWithMessageBar(messageBarState = messageBarState, successMaxLines = 2) {
                 AuthenticationContent(

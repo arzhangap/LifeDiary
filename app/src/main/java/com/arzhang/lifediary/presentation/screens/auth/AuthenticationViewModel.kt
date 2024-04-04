@@ -24,7 +24,7 @@ class AuthenticationViewModel : ViewModel() {
         loadingState.value = loading
     }
 
-    fun signInWithMongoAtlas(tokenId: String, onSuccess: (Boolean) -> Unit, onError: (Exception) -> Unit) {
+    fun signInWithMongoAtlas(tokenId: String, onSuccess: () -> Unit, onError: (Exception) -> Unit) {
         viewModelScope.launch {
             try {
                 val result = withContext(Dispatchers.IO) {
@@ -34,9 +34,14 @@ class AuthenticationViewModel : ViewModel() {
                     ).loggedIn
                 }
                 withContext(Dispatchers.Main) {
-                    onSuccess(result)
-                    delay(600)
-                    loggedInState.value = true
+                    if(result) {
+                        onSuccess()
+                        delay(600)
+                        loggedInState.value = true
+                    }
+                    else {
+                        onError(Exception("ورود ناموفق"))
+                    }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {

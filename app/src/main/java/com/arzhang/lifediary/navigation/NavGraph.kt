@@ -70,7 +70,7 @@ fun NavGraphBuilder.authenticationRoute(
                 viewModel.signInWithMongoAtlas(
                     tokenId = tokenId,
                     onSuccess = {
-                        if(it) messageBarState.addSuccess("ورود موفق")
+                        messageBarState.addSuccess("ورود موفق")
                         viewModel.setLoading(false)
                     },
                     onError = {
