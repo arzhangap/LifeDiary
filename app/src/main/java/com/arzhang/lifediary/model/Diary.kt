@@ -13,6 +13,8 @@ class Diary : RealmObject {
     var _id: ObjectId = ObjectId.create()
     // id of each authenticated user to load their related diaries
     var ownerId: String = ""
+    // enum class is not supported so we use string
+    var mood: String = Mood.Neutral.name
     var title: String = ""
     var description: String = ""
     var images: RealmList<String> = realmListOf()
