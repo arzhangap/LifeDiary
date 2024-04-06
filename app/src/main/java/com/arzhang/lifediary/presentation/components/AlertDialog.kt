@@ -18,7 +18,7 @@ fun DisplayAlertDialog(
     icon: ImageVector,
 ) {
     if (dialogOpened) {
-        JustifiedRTLText(textCompose = { /*TODO*/
+        JustifiedRTLText(textCompose = {
         AlertDialog(
             icon = {
                 Icon(icon, contentDescription = "Icon")
