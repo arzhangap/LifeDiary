@@ -1,36 +1,34 @@
 package com.arzhang.lifediary.navigation
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.arzhang.lifediary.presentation.components.DisplayAlertDialog
 import com.arzhang.lifediary.presentation.screens.auth.AuthenticationScreen
 import com.arzhang.lifediary.presentation.screens.auth.AuthenticationViewModel
+import com.arzhang.lifediary.presentation.screens.home.HomeScreen
 import com.arzhang.lifediary.util.Constants.APP_ID
 import com.arzhang.lifediary.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
-import com.stevdzasan.messagebar.MessageBarState
 import com.stevdzasan.messagebar.rememberMessageBarState
-import com.stevdzasan.onetap.OneTapSignInState
 import com.stevdzasan.onetap.rememberOneTapSignInState
 import io.realm.kotlin.mongodb.App
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.Exception
+import kotlinx.coroutines.withContext
 
 @Composable
 fun SetUpNavGraph(
@@ -44,7 +42,15 @@ fun SetUpNavGraph(
                 navController.navigate(Screen.Home.route)
             }
         )
-        homeRoute()
+        homeRoute(
+            navigateToWrite = {
+                navController.navigate(Screen.Write.route)
+            },
+            navigateToAuth = {
+                navController.popBackStack()
+                navController.navigate(Screen.Authentication.route)
+            }
+        )
         writeRoute()
     }
 }
@@ -81,24 +87,51 @@ fun NavGraphBuilder.authenticationRoute(
             },
             onDialogDismissed = {
                 messageBarState.addError(Exception("ورود ناموفق"))
+                viewModel.setLoading(false)
             },
             loggedInState = loggedInState,
             navigateToHome = navigateToHome
         )
     }
 }
-fun NavGraphBuilder.homeRoute() {
+fun NavGraphBuilder.homeRoute(
+    navigateToWrite: () -> Unit,
+    navigateToAuth: () -> Unit
+) {
     composable(route = Screen.Home.route) {
-        val scope = rememberCoroutineScope()
-        Column(modifier = Modifier.fillMaxSize(),horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-            Button(onClick = {
-                scope.launch(Dispatchers.IO) {
-                    App.create(APP_ID).currentUser?.logOut()
-                }
-            }) {
-                Text("خروج")
-            }
+        val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+        var signOutDialogOpened by remember {
+            mutableStateOf(false)
         }
+        val scope = rememberCoroutineScope()
+        HomeScreen(
+            navigateToWrite = navigateToWrite,
+            drawerState = drawerState,
+            onMenuClicked = {
+                scope.launch {
+                    drawerState.open()
+                }},
+            onSignOutClicked = {signOutDialogOpened = true}
+        )
+        DisplayAlertDialog(
+            dialogOpened = signOutDialogOpened,
+            onDismissRequest = { signOutDialogOpened = false },
+            onConfirmation = {
+                             scope.launch(Dispatchers.IO) {
+                                 val user = App.create(APP_ID).currentUser
+                                 if(user != null) {
+                                     user.logOut()
+                                     signOutDialogOpened = false
+                                     withContext(Dispatchers.Main) {
+                                         navigateToAuth()
+                                     }
+                                 }
+                             }
+            },
+            dialogTitle = "خارج شدن از اکانت",
+            dialogText = "آیا مطمئن هستید که می خواهید از اکانت خود خارج شوید؟",
+            icon = Icons.Default.Warning
+        )
     }
 }
 fun NavGraphBuilder.writeRoute() {
