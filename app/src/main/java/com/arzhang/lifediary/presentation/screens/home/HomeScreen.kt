@@ -50,7 +50,11 @@ fun HomeScreen(
                     )
                 }
             },
-            content = {}
+            content = {
+                HomeContent(diaries = mapOf()) {
+                    
+                }
+            }
         )
     }
 }
@@ -102,3 +106,4 @@ fun NavigationDrawer(
         content = content
     )
 }
+
