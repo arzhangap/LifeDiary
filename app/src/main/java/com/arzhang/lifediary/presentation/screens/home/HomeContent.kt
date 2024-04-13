@@ -29,14 +29,14 @@ fun HomeContent(
     diaries: Map<LocalDate, List<Diary>>,
     onClick: (String) -> Unit
 ) {
-    if(diaries.isNotEmpty()) {
+    if (diaries.isNotEmpty()) {
         LazyColumn(modifier = Modifier.padding(horizontal = 24.dp)) {
             diaries.forEach { (localDate, diaries) ->
                 stickyHeader(key = localDate) {
                     DateHeader(localDate = localDate)
                 }
-                items(items = diaries, key = {it._id}) {
-                    DiaryHolder(diary = it, onClick = {})
+                items(items = diaries, key = { it._id }) {
+                    DiaryHolder(diary = it, onClick = onClick)
                 }
 
             }
@@ -53,13 +53,14 @@ fun DateHeader(localDate: LocalDate) {
             // use desugar to bypass sdk requirements.
             Text(
                 // values from 1 to 9 will have a zero before them. example: 09 but 10 will remain the same
-                text = String.format("%02d",localDate.dayOfMonth),
+                text = String.format("%02d", localDate.dayOfMonth),
                 style = TextStyle(
                     fontSize = MaterialTheme.typography.titleLarge.fontSize,
                     fontWeight = FontWeight.Light
                 )
             )
-            Text(text = localDate.dayOfWeek.toString().take(3),
+            Text(
+                text = localDate.dayOfWeek.toString().take(3),
                 style = TextStyle(
                     fontSize = MaterialTheme.typography.bodySmall.fontSize,
                     fontWeight = FontWeight.Light
@@ -75,7 +76,8 @@ fun DateHeader(localDate: LocalDate) {
                     fontWeight = FontWeight.Light
                 )
             )
-            Text(text = localDate.year.toString(),
+            Text(
+                text = localDate.year.toString(),
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
                 style = TextStyle(
                     fontSize = MaterialTheme.typography.bodySmall.fontSize,
@@ -116,7 +118,7 @@ fun EmptyPage(
 }
 
 @Composable
-@Preview(showBackground = true,)
+@Preview(showBackground = true)
 fun DateHeaderPreview() {
     DateHeader(localDate = LocalDate.now())
 }
