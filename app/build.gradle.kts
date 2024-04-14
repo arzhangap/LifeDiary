@@ -91,8 +91,8 @@ dependencies {
     // Splash Screen
     implementation(libs.androidx.core.splashscreen)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
-    implementation("io.realm.kotlin:library-sync:1.11.0")
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.library.sync.v1110)
 
     implementation(libs.library.sync)
 
