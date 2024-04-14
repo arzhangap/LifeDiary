@@ -21,6 +21,7 @@ import com.arzhang.lifediary.presentation.components.DisplayAlertDialog
 import com.arzhang.lifediary.presentation.screens.auth.AuthenticationScreen
 import com.arzhang.lifediary.presentation.screens.auth.AuthenticationViewModel
 import com.arzhang.lifediary.presentation.screens.home.HomeScreen
+import com.arzhang.lifediary.presentation.screens.home.HomeViewModel
 import com.arzhang.lifediary.util.Constants.APP_ID
 import com.arzhang.lifediary.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
 import com.stevdzasan.messagebar.rememberMessageBarState
@@ -94,46 +95,6 @@ fun NavGraphBuilder.authenticationRoute(
         )
     }
 }
-fun NavGraphBuilder.homeRoute(
-    navigateToWrite: () -> Unit,
-    navigateToAuth: () -> Unit
-) {
-    composable(route = Screen.Home.route) {
-        val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-        var signOutDialogOpened by remember {
-            mutableStateOf(false)
-        }
-        val scope = rememberCoroutineScope()
-        HomeScreen(
-            navigateToWrite = navigateToWrite,
-            drawerState = drawerState,
-            onMenuClicked = {
-                scope.launch {
-                    drawerState.open()
-                }},
-            onSignOutClicked = {signOutDialogOpened = true}
-        )
-        DisplayAlertDialog(
-            dialogOpened = signOutDialogOpened,
-            onDismissRequest = { signOutDialogOpened = false },
-            onConfirmation = {
-                             scope.launch(Dispatchers.IO) {
-                                 val user = App.create(APP_ID).currentUser
-                                 if(user != null) {
-                                     user.logOut()
-                                     signOutDialogOpened = false
-                                     withContext(Dispatchers.Main) {
-                                         navigateToAuth()
-                                     }
-                                 }
-                             }
-            },
-            dialogTitle = "خارج شدن از اکانت",
-            dialogText = "آیا مطمئن هستید که می خواهید از اکانت خود خارج شوید؟",
-            icon = Icons.Default.Warning
-        )
-    }
-}
 fun NavGraphBuilder.writeRoute() {
     composable(
         route = Screen.Write.route,
@@ -144,5 +105,49 @@ fun NavGraphBuilder.writeRoute() {
         })
     ) {
 
+    }
+}
+fun NavGraphBuilder.homeRoute(
+    navigateToWrite: () -> Unit,
+    navigateToAuth: () -> Unit
+) {
+    composable(route = Screen.Home.route) {
+        val viewModel: HomeViewModel = viewModel()
+        val diaries by viewModel.diaries
+        val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+        var signOutDialogOpened by remember {
+            mutableStateOf(false)
+        }
+        val scope = rememberCoroutineScope()
+        HomeScreen(
+            diaries = diaries,
+            navigateToWrite = navigateToWrite,
+            drawerState = drawerState,
+            onMenuClicked = {
+                scope.launch {
+                    drawerState.open()
+                }},
+            onSignOutClicked = {signOutDialogOpened = true}
+        )
+        
+        DisplayAlertDialog(
+            dialogOpened = signOutDialogOpened,
+            onDismissRequest = { signOutDialogOpened = false },
+            onConfirmation = {
+                scope.launch(Dispatchers.IO) {
+                    val user = App.create(APP_ID).currentUser
+                    if(user != null) {
+                        user.logOut()
+                        signOutDialogOpened = false
+                        withContext(Dispatchers.Main) {
+                            navigateToAuth()
+                        }
+                    }
+                }
+            },
+            dialogTitle = "خارج شدن از اکانت",
+            dialogText = "آیا مطمئن هستید که می خواهید از اکانت خود خارج شوید؟",
+            icon = Icons.Default.Warning
+        )
     }
 }

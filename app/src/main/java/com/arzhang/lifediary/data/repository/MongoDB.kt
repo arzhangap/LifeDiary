@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import java.time.ZoneId
 
-object MongoDB: MongoRepository {
+object MongoDB : MongoRepository {
     private val app = App.create(APP_ID)
     private val user = app.currentUser
     private lateinit var realm: Realm
@@ -25,11 +25,11 @@ object MongoDB: MongoRepository {
     }
 
     override fun configureTheRealm() {
-        if(user != null) {
+        if (user != null) {
             val config = SyncConfiguration.Builder(user, setOf(Diary::class))
                 .initialSubscriptions { sub ->
                     add(
-                        query = sub.query("ownerId == $0", user.identity),
+                        query = sub.query<Diary>("ownerId == $0", user.identity),
                         name = "User's Diaries"
                     )
                 }
@@ -40,9 +40,9 @@ object MongoDB: MongoRepository {
     }
 
     override fun getAllDiaries(): Flow<Diaries> {
-        return if(user != null) {
+        return if (user != null) {
             try {
-                realm.query<Diary>(query = "ownerId == $0", user.identity)
+                realm.query<Diary>(query = "ownerId == $0", user.id)
                     .sort(property = "date", sortOrder = Sort.DESCENDING)
                     .asFlow()
                     .map { result ->

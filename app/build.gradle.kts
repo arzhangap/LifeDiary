@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    id("io.realm.kotlin")
 //    id("com.google.gms.google-services")
 }
 
@@ -90,12 +91,8 @@ dependencies {
     // Splash Screen
     implementation(libs.androidx.core.splashscreen)
 
-    // Mongo DB Realm
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0-native-mt") {
-        version {
-            strictly("1.6.0-native-mt")
-        }
-    }
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+    implementation("io.realm.kotlin:library-sync:1.11.0")
 
     implementation(libs.library.sync)
 

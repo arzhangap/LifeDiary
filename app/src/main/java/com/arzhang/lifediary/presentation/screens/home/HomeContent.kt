@@ -1,8 +1,10 @@
 package com.arzhang.lifediary.presentation.screens.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.arzhang.lifediary.model.Diary
 import com.arzhang.lifediary.presentation.components.DiaryHolder
@@ -26,16 +29,25 @@ import java.time.LocalDate
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeContent(
+    paddingValues: PaddingValues,
     diaries: Map<LocalDate, List<Diary>>,
     onClick: (String) -> Unit
 ) {
     if (diaries.isNotEmpty()) {
-        LazyColumn(modifier = Modifier.padding(horizontal = 24.dp)) {
+        LazyColumn(
+            modifier = Modifier.padding(horizontal = 24.dp)
+            .padding(
+                top = paddingValues.calculateTopPadding(),
+                bottom = paddingValues.calculateBottomPadding(),
+                start = paddingValues.calculateRightPadding(LayoutDirection.Ltr),
+                end = paddingValues.calculateLeftPadding(LayoutDirection.Ltr)
+            )
+        ) {
             diaries.forEach { (localDate, diaries) ->
                 stickyHeader(key = localDate) {
-                    DateHeader(localDate = localDate)
+                    DateHeader(localDate = localDate, modifier = Modifier.padding(vertical = 14.dp).background(color = MaterialTheme.colorScheme.surface))
                 }
-                items(items = diaries, key = { it._id }) {
+                items(items = diaries, key = { it._id.toString() }) {
                     DiaryHolder(diary = it, onClick = onClick)
                 }
 
@@ -47,8 +59,8 @@ fun HomeContent(
 }
 
 @Composable
-fun DateHeader(localDate: LocalDate) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+fun DateHeader(localDate: LocalDate, modifier: Modifier = Modifier) {
+    Row(verticalAlignment = Alignment.CenterVertically, modifier = modifier) {
         Column(horizontalAlignment = Alignment.End) {
             // use desugar to bypass sdk requirements.
             Text(
