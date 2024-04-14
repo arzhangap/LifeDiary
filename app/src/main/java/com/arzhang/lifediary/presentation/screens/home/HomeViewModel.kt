@@ -18,6 +18,7 @@ class HomeViewModel : ViewModel() {
     }
 
     private fun observeAllDiaries() {
+        diaries.value = RequestState.Loading
         viewModelScope.launch {
             MongoDB.getAllDiaries().collect { result ->
                 diaries.value = result
