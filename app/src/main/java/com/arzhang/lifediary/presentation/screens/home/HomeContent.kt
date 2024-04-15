@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -45,7 +46,9 @@ fun HomeContent(
         ) {
             diaries.forEach { (localDate, diaries) ->
                 stickyHeader(key = localDate) {
-                    DateHeader(localDate = localDate, modifier = Modifier.padding(vertical = 14.dp).background(color = MaterialTheme.colorScheme.surface))
+                    DateHeader(
+                        localDate = localDate
+                    )
                 }
                 items(items = diaries, key = { it._id.toString() }) {
                     DiaryHolder(diary = it, onClick = onClick)
@@ -60,7 +63,13 @@ fun HomeContent(
 
 @Composable
 fun DateHeader(localDate: LocalDate, modifier: Modifier = Modifier) {
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = modifier) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surface)
+            .padding(vertical = 14.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
         Column(horizontalAlignment = Alignment.End) {
             // use desugar to bypass sdk requirements.
             Text(
