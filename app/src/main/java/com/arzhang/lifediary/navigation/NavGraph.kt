@@ -18,11 +18,13 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.arzhang.lifediary.model.Diary
 import com.arzhang.lifediary.presentation.components.DisplayAlertDialog
 import com.arzhang.lifediary.presentation.screens.auth.AuthenticationScreen
 import com.arzhang.lifediary.presentation.screens.auth.AuthenticationViewModel
 import com.arzhang.lifediary.presentation.screens.home.HomeScreen
 import com.arzhang.lifediary.presentation.screens.home.HomeViewModel
+import com.arzhang.lifediary.presentation.screens.write.WriteScreen
 import com.arzhang.lifediary.util.Constants.APP_ID
 import com.arzhang.lifediary.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
 import com.arzhang.lifediary.util.RequestState
@@ -60,7 +62,9 @@ fun SetUpNavGraph(
             },
             onDataLoaded = onDataLoaded
         )
-        writeRoute()
+        writeRoute(onBackPressed = {
+            navController.popBackStack()
+        })
     }
 }
 
@@ -76,7 +80,7 @@ fun NavGraphBuilder.authenticationRoute(
         val messageBarState = rememberMessageBarState()
 
         LaunchedEffect(key1 = Unit) {
-            onDataLoaded
+            onDataLoaded()
         }
         AuthenticationScreen(
             oneTapSignInState = oneTapState,
@@ -108,18 +112,7 @@ fun NavGraphBuilder.authenticationRoute(
         )
     }
 }
-fun NavGraphBuilder.writeRoute() {
-    composable(
-        route = Screen.Write.route,
-        arguments = listOf(navArgument(name = WRITE_SCREEN_ARGUMENT_KEY) {
-            type = NavType.StringType
-            nullable = true
-            defaultValue = null
-        })
-    ) {
 
-    }
-}
 fun NavGraphBuilder.homeRoute(
     navigateToWrite: () -> Unit,
     navigateToAuth: () -> Unit,
@@ -168,6 +161,28 @@ fun NavGraphBuilder.homeRoute(
             dialogTitle = "خارج شدن از اکانت",
             dialogText = "آیا مطمئن هستید که می خواهید از اکانت خود خارج شوید؟",
             icon = Icons.Default.Warning
+        )
+    }
+}
+
+fun NavGraphBuilder.writeRoute(
+    onBackPressed: () -> Unit
+) {
+    composable(
+        route = Screen.Write.route,
+        arguments = listOf(navArgument(name = WRITE_SCREEN_ARGUMENT_KEY) {
+            type = NavType.StringType
+            nullable = true
+            defaultValue = null
+        })
+    ) {
+        WriteScreen(
+            selectedDiary = Diary().apply {
+                title = "Title"
+                description = "hmmm"
+            },
+            onBackPressed = onBackPressed,
+            onDeleteConfirmed = {}
         )
     }
 }
