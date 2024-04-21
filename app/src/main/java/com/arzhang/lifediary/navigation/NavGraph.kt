@@ -1,5 +1,7 @@
 package com.arzhang.lifediary.navigation
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.DrawerValue
@@ -19,6 +21,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.arzhang.lifediary.model.Diary
+import com.arzhang.lifediary.model.Mood
 import com.arzhang.lifediary.presentation.components.DisplayAlertDialog
 import com.arzhang.lifediary.presentation.screens.auth.AuthenticationScreen
 import com.arzhang.lifediary.presentation.screens.auth.AuthenticationViewModel
@@ -165,6 +168,7 @@ fun NavGraphBuilder.homeRoute(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 fun NavGraphBuilder.writeRoute(
     onBackPressed: () -> Unit
 ) {
@@ -176,7 +180,9 @@ fun NavGraphBuilder.writeRoute(
             defaultValue = null
         })
     ) {
+        val pagerState = rememberPagerState{Mood.entries.size}
         WriteScreen(
+            pagerState = pagerState,
             selectedDiary = Diary().apply {
                 title = "Title"
                 description = "hmmm"
