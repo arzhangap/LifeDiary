@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -29,10 +30,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.arzhang.lifediary.model.Mood
+import com.arzhang.lifediary.ui.theme.LifeDiaryTheme
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -77,7 +80,9 @@ fun WriteContent(
            }
             Spacer(modifier = Modifier.height(30.dp))
             TextField(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
                 value = title,
                 onValueChange = onTitleChanged,
                 placeholder = {
@@ -86,9 +91,9 @@ fun WriteContent(
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Unspecified,
-                    disabledIndicatorColor = Color.Unspecified,
-                    unfocusedIndicatorColor = Color.Unspecified,
+                    focusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
                     focusedPlaceholderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
                     unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
                 ),
@@ -103,7 +108,9 @@ fun WriteContent(
 
             )
             TextField(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
                 value = description,
                 onValueChange = onDescriptionChanged,
                 placeholder = {
@@ -112,9 +119,9 @@ fun WriteContent(
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Unspecified,
-                    disabledIndicatorColor = Color.Unspecified,
-                    unfocusedIndicatorColor = Color.Unspecified,
+                    focusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
                     focusedPlaceholderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
                     unfocusedPlaceholderColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
                 ),
@@ -138,5 +145,22 @@ fun WriteContent(
                 Text(text = "Save")
             }
         }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Preview
+@Composable
+private fun WritePreview() {
+    val pagerState = rememberPagerState{Mood.entries.size}
+    LifeDiaryTheme {
+        WriteContent(
+            paddingValues = PaddingValues(1.dp),
+            pagerState = pagerState,
+            title = "Test",
+            onTitleChanged = {},
+            description = "",
+            onDescriptionChanged = {}
+        )
     }
 }

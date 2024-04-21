@@ -28,6 +28,7 @@ import com.arzhang.lifediary.presentation.screens.auth.AuthenticationViewModel
 import com.arzhang.lifediary.presentation.screens.home.HomeScreen
 import com.arzhang.lifediary.presentation.screens.home.HomeViewModel
 import com.arzhang.lifediary.presentation.screens.write.WriteScreen
+import com.arzhang.lifediary.presentation.screens.write.WriteViewModel
 import com.arzhang.lifediary.util.Constants.APP_ID
 import com.arzhang.lifediary.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
 import com.arzhang.lifediary.util.RequestState
@@ -58,6 +59,9 @@ fun SetUpNavGraph(
         homeRoute(
             navigateToWrite = {
                 navController.navigate(Screen.Write.route)
+            },
+            navigateToWriteWithArgs = {
+                navController.navigate(Screen.Write.passDiaryId(diaryId = it))
             },
             navigateToAuth = {
                 navController.popBackStack()
@@ -118,6 +122,7 @@ fun NavGraphBuilder.authenticationRoute(
 
 fun NavGraphBuilder.homeRoute(
     navigateToWrite: () -> Unit,
+    navigateToWriteWithArgs: (String) -> Unit,
     navigateToAuth: () -> Unit,
     onDataLoaded: () -> Unit
 ) {
@@ -137,13 +142,14 @@ fun NavGraphBuilder.homeRoute(
         }
         HomeScreen(
             diaries = diaries,
-            navigateToWrite = navigateToWrite,
             drawerState = drawerState,
             onMenuClicked = {
                 scope.launch {
                     drawerState.open()
                 }},
-            onSignOutClicked = {signOutDialogOpened = true}
+            onSignOutClicked = {signOutDialogOpened = true},
+            navigateToWrite = navigateToWrite,
+            navigateToWriteWithArgs = navigateToWriteWithArgs
         )
         
         DisplayAlertDialog(
@@ -180,7 +186,10 @@ fun NavGraphBuilder.writeRoute(
             defaultValue = null
         })
     ) {
+        val viewModel: WriteViewModel = viewModel()
+        val uiState = viewModel.uiState
         val pagerState = rememberPagerState{Mood.entries.size}
+        
         WriteScreen(
             pagerState = pagerState,
             selectedDiary = Diary().apply {
