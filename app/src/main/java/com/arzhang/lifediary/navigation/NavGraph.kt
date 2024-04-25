@@ -8,6 +8,7 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,7 +21,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.arzhang.lifediary.model.Diary
 import com.arzhang.lifediary.model.Mood
 import com.arzhang.lifediary.presentation.components.DisplayAlertDialog
 import com.arzhang.lifediary.presentation.screens.auth.AuthenticationScreen
@@ -189,13 +189,14 @@ fun NavGraphBuilder.writeRoute(
         val viewModel: WriteViewModel = viewModel()
         val uiState = viewModel.uiState
         val pagerState = rememberPagerState{Mood.entries.size}
+        val pageNumber by remember { derivedStateOf { pagerState.currentPage } }
         
         WriteScreen(
+            uiState = uiState,
             pagerState = pagerState,
-            selectedDiary = Diary().apply {
-                title = "Title"
-                description = "hmmm"
-            },
+            moodName = {Mood.entries[pageNumber].name},
+            onTitleChanged = {viewModel.setTitle(title = it)},
+            onDescriptionChanged = {viewModel.setDescription(description = it)},
             onBackPressed = onBackPressed,
             onDeleteConfirmed = {}
         )
