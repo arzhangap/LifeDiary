@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import com.arzhang.lifediary.model.Diary
 import com.arzhang.lifediary.model.Mood
+import java.time.ZonedDateTime
 
 @OptIn(ExperimentalFoundationApi::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -20,14 +21,21 @@ fun WriteScreen(
     onDescriptionChanged: (String) -> Unit,
     pagerState: PagerState,
     moodName: () -> String,
-    onSaveClicked: (Diary) -> Unit
+    onSaveClicked: (Diary) -> Unit,
+    onDateAndTimeUpdated: (ZonedDateTime) -> Unit
 ) {
     LaunchedEffect(key1 = uiState.mood) {
         pagerState.scrollToPage(Mood.valueOf(uiState.mood.name).ordinal)
     }
     Scaffold(
         topBar = {
-                 WriteTopBar(selectedDiary = uiState.selectedDiary,onBackPressed = onBackPressed, onDeleteConfirmed = onDeleteConfirmed, moodName = moodName )
+            WriteTopBar(
+                selectedDiary = uiState.selectedDiary,
+                onBackPressed = onBackPressed,
+                onDeleteConfirmed = onDeleteConfirmed,
+                moodName = moodName,
+                onDateAndTimeUpdated = onDateAndTimeUpdated
+            )
         },
         content = {
             WriteContent(

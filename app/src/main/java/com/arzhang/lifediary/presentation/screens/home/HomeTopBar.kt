@@ -14,17 +14,17 @@ import androidx.compose.runtime.Composable
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeTopBar(onMenuClicked: () -> Unit, scrollBehavior: TopAppBarScrollBehavior){
+fun HomeTopBar(onMenuClicked: () -> Unit, scrollBehavior: TopAppBarScrollBehavior) {
     TopAppBar(
         scrollBehavior = scrollBehavior,
         navigationIcon = {
-                         IconButton(onClick = onMenuClicked) {
-                             Icon(
-                                 imageVector = Icons.Default.Menu,
-                                 contentDescription = "Hamburger Menu Icon",
-                                 tint = MaterialTheme.colorScheme.onSurface
-                             )
-                         }
+            IconButton(onClick = onMenuClicked) {
+                Icon(
+                    imageVector = Icons.Default.Menu,
+                    contentDescription = "Hamburger Menu Icon",
+                    tint = MaterialTheme.colorScheme.onSurface
+                )
+            }
         },
         title = {
             Text("Diary")

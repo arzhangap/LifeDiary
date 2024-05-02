@@ -46,7 +46,7 @@ fun Gallery(
         }
         val remainingImages by remember {
             derivedStateOf {
-               images.size - numberOfVisibleImages
+                images.size - numberOfVisibleImages
             }
         }
 
@@ -64,7 +64,7 @@ fun Gallery(
                 )
                 Spacer(modifier = Modifier.width(spaceBetween))
             }
-            if(remainingImages > 0) {
+            if (remainingImages > 0) {
                 LastImageOverlay(
                     imageSize = imageSize,
                     imageShape = imageShape,

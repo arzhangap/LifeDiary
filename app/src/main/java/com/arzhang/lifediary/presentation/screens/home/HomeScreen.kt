@@ -56,7 +56,7 @@ fun HomeScreen(
 ) {
     var padding by remember { mutableStateOf(PaddingValues()) }
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-    NavigationDrawer(drawerState = drawerState , onSignOutClicked = onSignOutClicked) {
+    NavigationDrawer(drawerState = drawerState, onSignOutClicked = onSignOutClicked) {
         Scaffold(
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
             topBar = {
@@ -75,7 +75,7 @@ fun HomeScreen(
             },
             content = {
                 padding = it
-                when(diaries) {
+                when (diaries) {
                     is RequestState.Success -> {
                         HomeContent(
                             diaries = diaries.data,
@@ -83,17 +83,23 @@ fun HomeScreen(
                             paddingValues = padding
                         )
                     }
+
                     is RequestState.Error -> {
                         EmptyPage(
                             title = "Error",
                             subtitle = "${diaries.error.message}"
                         )
                     }
+
                     is RequestState.Loading -> {
-                        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
                             CircularProgressIndicator()
                         }
                     }
+
                     else -> {}
                 }
             }
@@ -110,40 +116,40 @@ fun NavigationDrawer(
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-                        ModalDrawerSheet(
-                            content = {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(250.dp),
-                                contentAlignment = Alignment.Center,
-                            ) {
-                                Image(
-                                    painter = painterResource(id = R.drawable.logo),
-                                    contentDescription = null,
-                                )
-                            }
-                                JustifiedRTLText(textCompose = {
-                                NavigationDrawerItem(
-                                    label = {
-                                        Row(modifier = Modifier.padding(5.dp)) {
-                                            Icon(
-                                                imageVector = Icons.Default.AccountCircle,
-                                                contentDescription = "Sign out Icon"
-                                            )
-                                            Spacer(modifier = Modifier.width(10.dp))
-                                            Text(
-                                                text = "خارج شوید",
-                                                color = MaterialTheme.colorScheme.onSurface
-                                            )
-                                        }
-                                    },
-                                    selected = false,
-                                    onClick = onSignOutClicked
-                                )
-                                })
-                        }
-    )
+            ModalDrawerSheet(
+                content = {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(250.dp),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.logo),
+                            contentDescription = null,
+                        )
+                    }
+                    JustifiedRTLText(textCompose = {
+                        NavigationDrawerItem(
+                            label = {
+                                Row(modifier = Modifier.padding(5.dp)) {
+                                    Icon(
+                                        imageVector = Icons.Default.AccountCircle,
+                                        contentDescription = "Sign out Icon"
+                                    )
+                                    Spacer(modifier = Modifier.width(10.dp))
+                                    Text(
+                                        text = "خارج شوید",
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                }
+                            },
+                            selected = false,
+                            onClick = onSignOutClicked
+                        )
+                    })
+                }
+            )
         },
         content = content
     )

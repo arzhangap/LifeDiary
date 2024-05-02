@@ -20,7 +20,7 @@ class MainActivity : ComponentActivity() {
         installSplashScreen().setKeepOnScreenCondition {
             keepSplashOpened
         }
-        WindowCompat.setDecorFitsSystemWindows(window,false)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             LifeDiaryTheme {
                 val navController = rememberNavController()
@@ -36,8 +36,8 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-fun calculateStartDestination() : String {
+fun calculateStartDestination(): String {
     val user = App.create(appId = APP_ID).currentUser
-    return if(user != null && user.loggedIn) Screen.Home.route
+    return if (user != null && user.loggedIn) Screen.Home.route
     else Screen.Authentication.route
 }

@@ -19,38 +19,38 @@ fun DisplayAlertDialog(
 ) {
     if (dialogOpened) {
         JustifiedRTLText(textCompose = {
-        AlertDialog(
-            icon = {
-                Icon(icon, contentDescription = "Icon")
-            },
-            title = {
-                Text(text = dialogTitle)
-            },
-            text = {
-                Text(text = dialogText)
-            },
-            onDismissRequest = {
-                onDismissRequest()
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        onConfirmation()
+            AlertDialog(
+                icon = {
+                    Icon(icon, contentDescription = "Icon")
+                },
+                title = {
+                    Text(text = dialogTitle)
+                },
+                text = {
+                    Text(text = dialogText)
+                },
+                onDismissRequest = {
+                    onDismissRequest()
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            onConfirmation()
+                        }
+                    ) {
+                        Text("تایید")
                     }
-                ) {
-                    Text("تایید")
-                }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = {
-                        onDismissRequest()
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            onDismissRequest()
+                        }
+                    ) {
+                        Text("منصرف شدم")
                     }
-                ) {
-                    Text("منصرف شدم")
                 }
-            }
-        )
+            )
         })
     }
 }

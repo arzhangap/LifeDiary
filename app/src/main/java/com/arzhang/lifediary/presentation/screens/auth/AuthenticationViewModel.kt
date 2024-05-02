@@ -34,12 +34,11 @@ class AuthenticationViewModel : ViewModel() {
                     ).loggedIn
                 }
                 withContext(Dispatchers.Main) {
-                    if(result) {
+                    if (result) {
                         onSuccess()
                         delay(600)
                         loggedInState.value = true
-                    }
-                    else {
+                    } else {
                         onError(Exception("ورود ناموفق"))
                     }
                 }

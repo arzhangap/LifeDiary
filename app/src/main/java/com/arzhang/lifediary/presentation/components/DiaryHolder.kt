@@ -70,11 +70,12 @@ fun DiaryHolder(diary: Diary, onClick: (String) -> Unit) {
             tonalElevation = Elevation.level1
         ) {}
         Spacer(modifier = Modifier.width(20.dp))
-        Surface(modifier = Modifier
-            .clip(shape = Shapes().medium)
-            .onGloballyPositioned {
-                componentHeight = with(localDensity) { it.size.height.toDp() }
-            },
+        Surface(
+            modifier = Modifier
+                .clip(shape = Shapes().medium)
+                .onGloballyPositioned {
+                    componentHeight = with(localDensity) { it.size.height.toDp() }
+                },
             tonalElevation = Elevation.level1
         ) {
             Column(modifier = Modifier.fillMaxWidth()) {
@@ -86,8 +87,10 @@ fun DiaryHolder(diary: Diary, onClick: (String) -> Unit) {
                     maxLines = 6,
                     overflow = TextOverflow.Ellipsis
                 )
-                if(diary.images.isNotEmpty()) {
-                    ShowGalleryButton(galleryOpen = galleryOpen,onClick = {galleryOpen = !galleryOpen})
+                if (diary.images.isNotEmpty()) {
+                    ShowGalleryButton(
+                        galleryOpen = galleryOpen,
+                        onClick = { galleryOpen = !galleryOpen })
                 }
                 AnimatedVisibility(
                     visible = galleryOpen,
@@ -159,8 +162,9 @@ fun ShowGalleryButton(
 fun DiaryHolderPreview() {
     DiaryHolder(diary = Diary().apply {
         title = "یاهاها"
-        description = "من در انزوا به سر میبرم مزاحم بنده نشوید. من در انزوا به سر میبرم مزاحم بنده نشوید. من در انزوا به سر میبرم مزاحم بنده نشوید."
+        description =
+            "من در انزوا به سر میبرم مزاحم بنده نشوید. من در انزوا به سر میبرم مزاحم بنده نشوید. من در انزوا به سر میبرم مزاحم بنده نشوید."
         mood = Mood.Happy.name
-        images = realmListOf("","")
+        images = realmListOf("", "")
     }, onClick = {})
 }

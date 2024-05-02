@@ -33,8 +33,7 @@ fun AuthenticationScreen(
             .background(MaterialTheme.colorScheme.surface)
             // set paddings to avoid overlap of transparent bar
             .statusBarsPadding()
-            .navigationBarsPadding()
-        ,
+            .navigationBarsPadding(),
         content = {
             ContentWithMessageBar(messageBarState = messageBarState, successMaxLines = 2) {
                 AuthenticationContent(
@@ -56,6 +55,6 @@ fun AuthenticationScreen(
     )
 
     LaunchedEffect(key1 = loggedInState) {
-        if(loggedInState) navigateToHome()
+        if (loggedInState) navigateToHome()
     }
 }

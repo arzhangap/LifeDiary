@@ -105,10 +105,14 @@ dependencies {
     implementation(libs.coil.compose)
 
      // Pager
-//    implementation("com.google.accompanist-pager:0.27.0")
+//   implementation("com.google.accompanist-pager:0.27.0")
 
     // Date-Time Picker
-    implementation(libs.datetime)
+    implementation(libs.core)
+    // CALENDAR
+    implementation(libs.maxkeppeler.calendar)
+    // CLOCK
+    implementation(libs.clock)
 
     // Messages Bar Compose
     implementation(libs.messagebarcompose)

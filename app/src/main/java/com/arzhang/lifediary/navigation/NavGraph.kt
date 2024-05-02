@@ -1,5 +1,6 @@
 package com.arzhang.lifediary.navigation
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -14,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -97,7 +99,7 @@ fun NavGraphBuilder.authenticationRoute(
                 oneTapState.open()
                 viewModel.setLoading(true)
             },
-            onTokenReceived = {tokenId->
+            onTokenReceived = { tokenId ->
                 viewModel.signInWithMongoAtlas(
                     tokenId = tokenId,
                     onSuccess = {
@@ -136,7 +138,7 @@ fun NavGraphBuilder.homeRoute(
         val scope = rememberCoroutineScope()
 
         LaunchedEffect(key1 = diaries) {
-            if(diaries !is RequestState.Loading) {
+            if (diaries !is RequestState.Loading) {
                 onDataLoaded()
             }
         }
@@ -146,19 +148,20 @@ fun NavGraphBuilder.homeRoute(
             onMenuClicked = {
                 scope.launch {
                     drawerState.open()
-                }},
-            onSignOutClicked = {signOutDialogOpened = true},
+                }
+            },
+            onSignOutClicked = { signOutDialogOpened = true },
             navigateToWrite = navigateToWrite,
             navigateToWriteWithArgs = navigateToWriteWithArgs
         )
-        
+
         DisplayAlertDialog(
             dialogOpened = signOutDialogOpened,
             onDismissRequest = { signOutDialogOpened = false },
             onConfirmation = {
                 scope.launch(Dispatchers.IO) {
                     val user = App.create(APP_ID).currentUser
-                    if(user != null) {
+                    if (user != null) {
                         user.logOut()
                         signOutDialogOpened = false
                         withContext(Dispatchers.Main) {
@@ -187,25 +190,52 @@ fun NavGraphBuilder.writeRoute(
         })
     ) {
         val viewModel: WriteViewModel = viewModel()
+        val context = LocalContext.current
         val uiState = viewModel.uiState
-        val pagerState = rememberPagerState{Mood.entries.size}
+        val pagerState = rememberPagerState { Mood.entries.size }
         val pageNumber by remember { derivedStateOf { pagerState.currentPage } }
-        
+
         WriteScreen(
             uiState = uiState,
-            pagerState = pagerState,
-            moodName = {Mood.entries[pageNumber].name},
-            onTitleChanged = {viewModel.setTitle(title = it)},
-            onDescriptionChanged = {viewModel.setDescription(description = it)},
             onBackPressed = onBackPressed,
-            onDeleteConfirmed = {},
-            onSaveClicked ={
-                viewModel.insertDiary(
-                    diary = it.apply { mood = Mood.values()[pageNumber].name },
-                    onSuccess = { onBackPressed() },
-                    onError = {}
+            onDeleteConfirmed = {
+                viewModel.deleteDiary(
+                    onSuccess = {
+                        Toast.makeText(
+                            context,
+                            "Deleted",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        onBackPressed()
+                    },
+                    onError = { message ->
+                        Toast.makeText(
+                            context,
+                            message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    },
                 )
-            }
+            },
+            onTitleChanged = { viewModel.setTitle(title = it) },
+            onDescriptionChanged = { viewModel.setDescription(description = it) },
+            pagerState = pagerState,
+            moodName = { Mood.entries[pageNumber].name },
+            onSaveClicked = {
+                viewModel.upsertDiary(
+                    diary = it.apply { mood = Mood.entries[pageNumber].name },
+                    onSuccess = { onBackPressed() },
+                    onError = {message ->
+                        Toast.makeText(
+                            context,
+                            message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                )
+            },
+
+            onDateAndTimeUpdated = { viewModel.updateDateAndTime(it) }
         )
     }
 }
