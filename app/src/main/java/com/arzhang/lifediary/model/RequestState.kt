@@ -1,4 +1,4 @@
-package com.arzhang.lifediary.util
+package com.arzhang.lifediary.model
 
 sealed class RequestState<out T> {
     object Idle : RequestState<Nothing>()

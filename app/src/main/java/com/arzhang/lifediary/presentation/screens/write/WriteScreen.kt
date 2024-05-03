@@ -1,12 +1,14 @@
 package com.arzhang.lifediary.presentation.screens.write
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import com.arzhang.lifediary.model.Diary
+import com.arzhang.lifediary.model.GalleryState
 import com.arzhang.lifediary.model.Mood
 import java.time.ZonedDateTime
 
@@ -22,7 +24,9 @@ fun WriteScreen(
     pagerState: PagerState,
     moodName: () -> String,
     onSaveClicked: (Diary) -> Unit,
-    onDateAndTimeUpdated: (ZonedDateTime) -> Unit
+    onDateAndTimeUpdated: (ZonedDateTime) -> Unit,
+    galleryState: GalleryState,
+    onImageSelected: (Uri) -> Unit
 ) {
     LaunchedEffect(key1 = uiState.mood) {
         pagerState.scrollToPage(Mood.valueOf(uiState.mood.name).ordinal)
@@ -46,7 +50,9 @@ fun WriteScreen(
                 onTitleChanged = onTitleChanged,
                 description = uiState.description,
                 onDescriptionChanged = onDescriptionChanged,
-                onSaveClicked = onSaveClicked
+                onSaveClicked = onSaveClicked,
+                galleryState = galleryState,
+                onImageSelected = onImageSelected
             )
         }
     )

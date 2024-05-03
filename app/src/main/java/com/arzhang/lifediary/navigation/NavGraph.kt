@@ -23,6 +23,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.arzhang.lifediary.model.GalleryImage
 import com.arzhang.lifediary.model.Mood
 import com.arzhang.lifediary.presentation.components.DisplayAlertDialog
 import com.arzhang.lifediary.presentation.screens.auth.AuthenticationScreen
@@ -33,7 +34,8 @@ import com.arzhang.lifediary.presentation.screens.write.WriteScreen
 import com.arzhang.lifediary.presentation.screens.write.WriteViewModel
 import com.arzhang.lifediary.util.Constants.APP_ID
 import com.arzhang.lifediary.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
-import com.arzhang.lifediary.util.RequestState
+import com.arzhang.lifediary.model.RequestState
+import com.arzhang.lifediary.model.rememberGalleryState
 import com.stevdzasan.messagebar.rememberMessageBarState
 import com.stevdzasan.onetap.rememberOneTapSignInState
 import io.realm.kotlin.mongodb.App
@@ -194,9 +196,12 @@ fun NavGraphBuilder.writeRoute(
         val uiState = viewModel.uiState
         val pagerState = rememberPagerState { Mood.entries.size }
         val pageNumber by remember { derivedStateOf { pagerState.currentPage } }
+        val galleryState = rememberGalleryState()
+
 
         WriteScreen(
             uiState = uiState,
+            galleryState = galleryState,
             onBackPressed = onBackPressed,
             onDeleteConfirmed = {
                 viewModel.deleteDiary(
@@ -234,8 +239,15 @@ fun NavGraphBuilder.writeRoute(
                     }
                 )
             },
-
-            onDateAndTimeUpdated = { viewModel.updateDateAndTime(it) }
+            onDateAndTimeUpdated = { viewModel.updateDateAndTime(it) },
+            onImageSelected = {
+                galleryState.addImage(
+                    GalleryImage(
+                        image = it,
+                        remoteImagePath = ""
+                    )
+                )
+            }
         )
     }
 }

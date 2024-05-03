@@ -2,7 +2,7 @@ package com.arzhang.lifediary.data.repository
 
 import com.arzhang.lifediary.model.Diary
 import com.arzhang.lifediary.util.Constants.APP_ID
-import com.arzhang.lifediary.util.RequestState
+import com.arzhang.lifediary.model.RequestState
 import com.arzhang.lifediary.util.toInstant
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query

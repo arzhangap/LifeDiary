@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import com.arzhang.lifediary.R
 import com.arzhang.lifediary.data.repository.Diaries
 import com.arzhang.lifediary.util.JustifiedRTLText
-import com.arzhang.lifediary.util.RequestState
+import com.arzhang.lifediary.model.RequestState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

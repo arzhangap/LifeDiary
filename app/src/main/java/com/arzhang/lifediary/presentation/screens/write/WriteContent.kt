@@ -1,5 +1,6 @@
 package com.arzhang.lifediary.presentation.screens.write
 
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -11,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -20,7 +20,6 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text2.input.rememberTextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -42,9 +41,10 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.arzhang.lifediary.model.Diary
+import com.arzhang.lifediary.model.GalleryState
 import com.arzhang.lifediary.model.Mood
+import com.arzhang.lifediary.presentation.components.GalleryUploader
 import kotlinx.coroutines.launch
-import org.mongodb.kbson.ObjectId
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -57,6 +57,8 @@ fun WriteContent(
     description: String,
     onDescriptionChanged: (String) -> Unit,
     onSaveClicked: (Diary) -> Unit,
+    galleryState: GalleryState,
+    onImageSelected: (Uri) -> Unit
 ) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
@@ -161,6 +163,15 @@ fun WriteContent(
             modifier = Modifier.padding(horizontal = 24.dp),
             verticalArrangement = Arrangement.Bottom
         ) {
+            Spacer(modifier = Modifier.height(12.dp))
+
+            GalleryUploader(
+                galleryState = galleryState,
+                onAddClicked = { /*TODO*/ },
+                onImageSelected = onImageSelected
+            ) {
+
+            }
             Spacer(modifier = Modifier.height(12.dp))
             Button(
                 modifier = Modifier

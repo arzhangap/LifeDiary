@@ -1,7 +1,7 @@
 package com.arzhang.lifediary.data.repository
 
 import com.arzhang.lifediary.model.Diary
-import com.arzhang.lifediary.util.RequestState
+import com.arzhang.lifediary.model.RequestState
 import kotlinx.coroutines.flow.Flow
 import org.mongodb.kbson.ObjectId
 import java.time.LocalDate

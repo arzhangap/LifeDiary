@@ -11,8 +11,7 @@ import com.arzhang.lifediary.data.repository.MongoDB
 import com.arzhang.lifediary.model.Diary
 import com.arzhang.lifediary.model.Mood
 import com.arzhang.lifediary.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
-import com.arzhang.lifediary.util.RequestState
-import com.arzhang.lifediary.util.toInstant
+import com.arzhang.lifediary.model.RequestState
 import com.arzhang.lifediary.util.toRealmInstant
 import io.realm.kotlin.types.RealmInstant
 import kotlinx.coroutines.Dispatchers
