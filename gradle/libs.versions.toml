@@ -25,6 +25,9 @@ messagebarcomposeVersion = "1.0.5"
 navigationCompose = "2.7.7"
 onetapcomposeVersion = "1.0.7"
 roomCompiler = "2.6.1"
+googleServices = "4.4.1"
+firebaseAuth = "23.0.0"
+firebaseStorageKtx = "20.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -66,6 +69,9 @@ library-sync-v1110 = { module = "io.realm.kotlin:library-sync", version.ref = "l
 maxkeppeler-calendar = { module = "com.maxkeppeler.sheets-compose-dialogs:calendar", version.ref = "core" }
 messagebarcompose = { module = "com.github.stevdza-san:messagebarcompose", version.ref = "messagebarcomposeVersion" }
 onetapcompose = { module = "com.github.stevdza-san:OneTapCompose", version.ref = "onetapcomposeVersion" }
+google-services = { group = "com.google.gms", name = "google-services", version.ref = "googleServices" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
+firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage-ktx", version.ref = "firebaseStorageKtx" }
 
 
 

@@ -10,6 +10,7 @@ import com.arzhang.lifediary.navigation.Screen
 import com.arzhang.lifediary.navigation.SetUpNavGraph
 import com.arzhang.lifediary.ui.theme.LifeDiaryTheme
 import com.arzhang.lifediary.util.Constants.APP_ID
+import com.google.firebase.FirebaseApp
 import io.realm.kotlin.mongodb.App
 
 class MainActivity : ComponentActivity() {
@@ -21,6 +22,7 @@ class MainActivity : ComponentActivity() {
             keepSplashOpened
         }
         WindowCompat.setDecorFitsSystemWindows(window, false)
+        FirebaseApp.initializeApp(this)
         setContent {
             LifeDiaryTheme {
                 val navController = rememberNavController()

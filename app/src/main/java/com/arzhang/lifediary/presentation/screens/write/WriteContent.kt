@@ -44,6 +44,7 @@ import com.arzhang.lifediary.model.Diary
 import com.arzhang.lifediary.model.GalleryState
 import com.arzhang.lifediary.model.Mood
 import com.arzhang.lifediary.presentation.components.GalleryUploader
+import io.realm.kotlin.ext.toRealmList
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -105,8 +106,7 @@ fun WriteContent(
             Spacer(modifier = Modifier.height(30.dp))
             TextField(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 24.dp),
+                    .fillMaxWidth(),
                 value = title,
                 onValueChange = onTitleChanged,
                 placeholder = {
@@ -167,7 +167,7 @@ fun WriteContent(
 
             GalleryUploader(
                 galleryState = galleryState,
-                onAddClicked = { /*TODO*/ },
+                onAddClicked = { focusManager.clearFocus() },
                 onImageSelected = onImageSelected
             ) {
 
@@ -184,6 +184,7 @@ fun WriteContent(
                             Diary().apply {
                                 this.title = uiState.title
                                 this.description = uiState.description
+                                this.images = galleryState.images.map { it.remoteImagePath }.toRealmList()
                             }
                         )
                     } else {

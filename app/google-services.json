@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "564550650488",
+    "project_id": "lifediaryproject",
+    "storage_bucket": "lifediaryproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:564550650488:android:05d8a18b7f747dd18c7b8d",
+        "android_client_info": {
+          "package_name": "com.arzhang.lifediary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "564550650488-lavbp821s2um8459so19h7b18lq9fblf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBl4W4TF4IYS3Bgo4gCT0E6LgvwWLXTx2s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "564550650488-b5oqjppjm1qo0jca2ajaps75dc05qh9i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
