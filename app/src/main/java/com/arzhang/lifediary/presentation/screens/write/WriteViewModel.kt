@@ -8,6 +8,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.arzhang.lifediary.data.database.ImageToUploadDao
+import com.arzhang.lifediary.data.database.entity.ImageToUpload
 import com.arzhang.lifediary.data.repository.MongoDB
 import com.arzhang.lifediary.model.Diary
 import com.arzhang.lifediary.model.GalleryImage
@@ -15,13 +17,13 @@ import com.arzhang.lifediary.model.GalleryState
 import com.arzhang.lifediary.model.Mood
 import com.arzhang.lifediary.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
 import com.arzhang.lifediary.model.RequestState
-import com.arzhang.lifediary.model.rememberGalleryState
 import com.arzhang.lifediary.util.fetchImagesFromFirebase
 import com.arzhang.lifediary.util.toRealmInstant
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.storage.FirebaseStorage
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.types.RealmInstant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
@@ -29,10 +31,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.mongodb.kbson.ObjectId
 import java.time.ZonedDateTime
+import javax.inject.Inject
 
 
-class WriteViewModel(
-    private val savedStateHandle: SavedStateHandle
+@HiltViewModel
+class WriteViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
+    private val imageToUploadDao: ImageToUploadDao
 ) : ViewModel() {
 
     val galleryState = GalleryState()
@@ -205,6 +210,20 @@ class WriteViewModel(
         galleryState.images.forEach {galleryImage->
             val imagePath = storage.child(galleryImage.remoteImagePath)
             imagePath.putFile(galleryImage.image)
+                .addOnProgressListener {
+                    val sessionUri = it.uploadSessionUri
+                    if(sessionUri != null) {
+                        viewModelScope.launch(Dispatchers.IO) {
+                            imageToUploadDao.addImagesToUpload(
+                                ImageToUpload(
+                                    remoteImagePath = galleryImage.remoteImagePath,
+                                    imageUri = galleryImage.image.toString(),
+                                    sessionUri = sessionUri.toString()
+                                )
+                            )
+                        }
+                    }
+                 }
         }
     }
 

@@ -1,7 +1,10 @@
 package com.arzhang.lifediary.util
 
 import android.net.Uri
+import androidx.core.net.toUri
+import com.arzhang.lifediary.data.database.entity.ImageToUpload
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.storageMetadata
 import io.realm.kotlin.types.RealmInstant
 import java.time.Instant
 
@@ -46,4 +49,16 @@ fun fetchImagesFromFirebase(
             }
         }
     }
+}
+
+fun retryUploadingImagesToFirebase(
+    imageToUpload: ImageToUpload,
+    onSuccess: () -> Unit
+) {
+    val storage = FirebaseStorage.getInstance().reference
+    storage.child(imageToUpload.remoteImagePath).putFile(
+        imageToUpload.imageUri.toUri(),
+        storageMetadata {  },
+        imageToUpload.sessionUri.toUri()
+    ).addOnSuccessListener { onSuccess() }
 }

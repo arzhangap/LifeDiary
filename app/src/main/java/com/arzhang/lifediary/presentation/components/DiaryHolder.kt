@@ -129,7 +129,7 @@ fun DiaryHolder(diary: Diary, onClick: (String) -> Unit) {
                     )
                 }
                 AnimatedVisibility(
-                    visible = galleryOpen,
+                    visible = galleryOpen && !galleryLoading,
                     enter = fadeIn() + expandVertically(
                         animationSpec = spring(
                             dampingRatio = Spring.DampingRatioMediumBouncy,

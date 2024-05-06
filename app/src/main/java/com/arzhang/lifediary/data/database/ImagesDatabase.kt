@@ -6,5 +6,5 @@ import com.arzhang.lifediary.data.database.entity.ImageToUpload
 
 @Database(entities = [ImageToUpload::class],version = 1, exportSchema = false)
 abstract class ImagesDatabase : RoomDatabase() {
-    abstract fun imageToUploadDao(): ImagesToUploadDao
+    abstract fun imageToUploadDao(): ImageToUploadDao
 }

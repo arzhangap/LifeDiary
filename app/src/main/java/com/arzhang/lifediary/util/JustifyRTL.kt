@@ -9,7 +9,6 @@ import androidx.compose.ui.unit.LayoutDirection
 @Composable
 fun JustifiedRTLText(
     textCompose: @Composable () -> Unit,
-    modifier: Modifier = Modifier
 ) {
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
         textCompose()

@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -38,6 +39,7 @@ import com.arzhang.lifediary.model.RequestState
 import com.arzhang.lifediary.model.rememberGalleryState
 import com.stevdzasan.messagebar.rememberMessageBarState
 import com.stevdzasan.onetap.rememberOneTapSignInState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.mongodb.App
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -195,8 +197,8 @@ fun NavGraphBuilder.writeRoute(
             defaultValue = null
         })
     ) {
-        val viewModel: WriteViewModel = viewModel()
         val context = LocalContext.current
+        val viewModel: WriteViewModel = hiltViewModel()
         val uiState = viewModel.uiState
         val galleryState = viewModel.galleryState
         val pagerState = rememberPagerState { Mood.entries.size }
