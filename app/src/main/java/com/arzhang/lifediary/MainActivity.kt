@@ -62,7 +62,7 @@ private fun cleanupCheck(
         result.forEach {imageToUpload ->
             retryUploadingImagesToFirebase(imageToUpload = imageToUpload) {
                 scope.launch(Dispatchers.IO) {
-                    imageToUploadDao.cleanUpImage(imageId = imageToUpload.id)
+                    imageToUploadDao.cleanupImage(imageId = imageToUpload.id)
                 }
             }
         }

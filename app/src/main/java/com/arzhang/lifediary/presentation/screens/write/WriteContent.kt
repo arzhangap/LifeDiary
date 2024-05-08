@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.arzhang.lifediary.model.Diary
+import com.arzhang.lifediary.model.GalleryImage
 import com.arzhang.lifediary.model.GalleryState
 import com.arzhang.lifediary.model.Mood
 import com.arzhang.lifediary.presentation.components.GalleryUploader
@@ -59,7 +60,8 @@ fun WriteContent(
     onDescriptionChanged: (String) -> Unit,
     onSaveClicked: (Diary) -> Unit,
     galleryState: GalleryState,
-    onImageSelected: (Uri) -> Unit
+    onImageSelected: (Uri) -> Unit,
+    onImageClicked: (GalleryImage) -> Unit,
 ) {
     val scrollState = rememberScrollState()
     val context = LocalContext.current
@@ -168,10 +170,9 @@ fun WriteContent(
             GalleryUploader(
                 galleryState = galleryState,
                 onAddClicked = { focusManager.clearFocus() },
-                onImageSelected = onImageSelected
-            ) {
-
-            }
+                onImageSelected = onImageSelected,
+                onImageClicked = onImageClicked
+            )
             Spacer(modifier = Modifier.height(12.dp))
             Button(
                 modifier = Modifier

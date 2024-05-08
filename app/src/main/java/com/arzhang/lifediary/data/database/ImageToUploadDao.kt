@@ -13,9 +13,9 @@ interface ImageToUploadDao {
     suspend fun getAllImages(): List<ImageToUpload>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addImagesToUpload(imageToUpload: ImageToUpload)
+    suspend fun addImageToUpload(imageToUpload: ImageToUpload)
 
     @Query("DELETE FROM image_to_upload_table WHERE id=:imageId")
-    suspend fun cleanUpImage(imageId: Int)
+    suspend fun cleanupImage(imageId: Int)
 
 }

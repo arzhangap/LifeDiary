@@ -92,7 +92,7 @@ fun NavGraphBuilder.authenticationRoute(
         val oneTapState = rememberOneTapSignInState()
         val messageBarState = rememberMessageBarState()
 
-        LaunchedEffect(key1 = Unit) {
+        LaunchedEffect(key1 = loadingState) {
             onDataLoaded()
         }
         AuthenticationScreen(
@@ -251,7 +251,8 @@ fun NavGraphBuilder.writeRoute(
                     image = uri,
                     imageType =type
                 )
-            }
+            },
+            onImageDeleteClicked = {},
         )
     }
 }

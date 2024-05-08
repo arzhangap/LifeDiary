@@ -2,7 +2,6 @@ package com.arzhang.lifediary.di
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.arzhang.lifediary.data.database.ImagesDatabase
 import com.arzhang.lifediary.util.Constants.IMAGES_DATABASE
 import dagger.Module
@@ -15,24 +14,20 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
-
     @Provides
     @Singleton
     fun provideDatabase(
         @ApplicationContext context: Context
-    ) : ImagesDatabase {
+    ): ImagesDatabase {
         return Room.databaseBuilder(
             context = context,
             klass = ImagesDatabase::class.java,
             name = IMAGES_DATABASE
         ).build()
-
     }
 
     @Singleton
     @Provides
     fun provideFirstDao(database: ImagesDatabase) = database.imageToUploadDao()
+
 }
-
-
-
