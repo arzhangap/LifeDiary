@@ -24,7 +24,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.arzhang.lifediary.model.GalleryImage
 import com.arzhang.lifediary.model.Mood
 import com.arzhang.lifediary.presentation.components.DisplayAlertDialog
 import com.arzhang.lifediary.presentation.screens.auth.AuthenticationScreen
@@ -36,10 +35,8 @@ import com.arzhang.lifediary.presentation.screens.write.WriteViewModel
 import com.arzhang.lifediary.util.Constants.APP_ID
 import com.arzhang.lifediary.util.Constants.WRITE_SCREEN_ARGUMENT_KEY
 import com.arzhang.lifediary.model.RequestState
-import com.arzhang.lifediary.model.rememberGalleryState
 import com.stevdzasan.messagebar.rememberMessageBarState
 import com.stevdzasan.onetap.rememberOneTapSignInState
-import dagger.hilt.android.lifecycle.HiltViewModel
 import io.realm.kotlin.mongodb.App
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -137,13 +134,13 @@ fun NavGraphBuilder.homeRoute(
     onDataLoaded: () -> Unit
 ) {
     composable(route = Screen.Home.route) {
-        val viewModel: HomeViewModel = viewModel()
+        val viewModel: HomeViewModel = hiltViewModel()
         val diaries by viewModel.diaries
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
-        var signOutDialogOpened by remember {
-            mutableStateOf(false)
-        }
+        var signOutDialogOpened by remember {mutableStateOf(false) }
+        var deleteAllDialogOpened by remember {mutableStateOf(false)}
         val scope = rememberCoroutineScope()
+        val context = LocalContext.current
 
         LaunchedEffect(key1 = diaries) {
             if (diaries !is RequestState.Loading) {
@@ -153,14 +150,17 @@ fun NavGraphBuilder.homeRoute(
         HomeScreen(
             diaries = diaries,
             drawerState = drawerState,
+            onSignOutClicked = { signOutDialogOpened = true },
             onMenuClicked = {
                 scope.launch {
                     drawerState.open()
                 }
             },
-            onSignOutClicked = { signOutDialogOpened = true },
+            onDeleteAllClicked = {
+                                 deleteAllDialogOpened = true
+            },
             navigateToWrite = navigateToWrite,
-            navigateToWriteWithArgs = navigateToWriteWithArgs
+            navigateToWriteWithArgs = navigateToWriteWithArgs,
         )
 
         DisplayAlertDialog(
@@ -181,6 +181,39 @@ fun NavGraphBuilder.homeRoute(
             dialogTitle = "خارج شدن از اکانت",
             dialogText = "آیا مطمئن هستید که می خواهید از اکانت خود خارج شوید؟",
             icon = Icons.Default.Warning
+        )
+        DisplayAlertDialog(
+            dialogTitle = "حذف تمام نوشته ها",
+            dialogText = "آیا مطمئن هستید که می خواهید تمام نوشته ها را پاک کنید؟",
+            dialogOpened = deleteAllDialogOpened,
+            onDismissRequest = { deleteAllDialogOpened = false },
+            onConfirmation = {
+                            deleteAllDialogOpened = false
+                             viewModel.deleteAllDiaries(
+                                 onSuccess = {
+                                             Toast.makeText(
+                                                 context,
+                                                 "All Diaries Deleted",
+                                                 Toast.LENGTH_SHORT
+                                             ).show()
+                                     scope.launch {
+                                         drawerState.close()
+                                     }
+                                 },
+                                 onError = {
+                                     Toast.makeText(
+                                         context,
+                                         if(it.message == "No Internet connection.")
+                                             "We need internet connection" else it.message,
+                                         Toast.LENGTH_SHORT
+                                     ).show()
+                                     scope.launch {
+                                         drawerState.close()
+                                     }
+                                 }
+                             )
+            },
+           icon = Icons.Default.Warning
         )
     }
 }
@@ -252,7 +285,9 @@ fun NavGraphBuilder.writeRoute(
                     imageType =type
                 )
             },
-            onImageDeleteClicked = {},
+            onImageDeleteClicked = {
+                galleryState.removeImage(it)
+            },
         )
     }
 }

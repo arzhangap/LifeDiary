@@ -2,6 +2,7 @@ package com.arzhang.lifediary.util
 
 import android.net.Uri
 import androidx.core.net.toUri
+import com.arzhang.lifediary.data.database.entity.ImageToDelete
 import com.arzhang.lifediary.data.database.entity.ImageToUpload
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storageMetadata
@@ -60,5 +61,13 @@ fun retryUploadingImagesToFirebase(
         imageToUpload.imageUri.toUri(),
         storageMetadata {  },
         imageToUpload.sessionUri.toUri()
+    ).addOnSuccessListener { onSuccess() }
+}
+fun retryDeletingImagesToFirebase(
+    imageToDelete: ImageToDelete,
+    onSuccess: () -> Unit
+) {
+    val storage = FirebaseStorage.getInstance().reference
+    storage.child(imageToDelete.remoteImagePath).delete(
     ).addOnSuccessListener { onSuccess() }
 }

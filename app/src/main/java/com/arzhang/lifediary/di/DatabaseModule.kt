@@ -2,6 +2,7 @@ package com.arzhang.lifediary.di
 
 import android.content.Context
 import androidx.room.Room
+import com.arzhang.lifediary.connectivity.NetworkConnectivityObserver
 import com.arzhang.lifediary.data.database.ImagesDatabase
 import com.arzhang.lifediary.util.Constants.IMAGES_DATABASE
 import dagger.Module
@@ -14,8 +15,8 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
-    @Provides
     @Singleton
+    @Provides
     fun provideDatabase(
         @ApplicationContext context: Context
     ): ImagesDatabase {
@@ -29,5 +30,15 @@ object DatabaseModule {
     @Singleton
     @Provides
     fun provideFirstDao(database: ImagesDatabase) = database.imageToUploadDao()
+
+    @Singleton
+    @Provides
+    fun provideSecondDao(database: ImagesDatabase) = database.imageToDeleteDao()
+
+    @Singleton
+    @Provides
+    fun provideNetworkConnectivityObserver(
+        @ApplicationContext context: Context
+    ) = NetworkConnectivityObserver(context = context)
 
 }

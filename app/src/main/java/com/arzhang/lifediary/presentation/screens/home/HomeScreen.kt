@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerState
@@ -52,11 +53,16 @@ fun HomeScreen(
     onSignOutClicked: () -> Unit,
     onMenuClicked: () -> Unit,
     navigateToWrite: () -> Unit,
-    navigateToWriteWithArgs: (String) -> Unit
+    navigateToWriteWithArgs: (String) -> Unit,
+    onDeleteAllClicked: () -> Unit
 ) {
     var padding by remember { mutableStateOf(PaddingValues()) }
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
-    NavigationDrawer(drawerState = drawerState, onSignOutClicked = onSignOutClicked) {
+    NavigationDrawer(
+        drawerState = drawerState,
+        onDeleteAllClicked = onDeleteAllClicked,
+        onSignOutClicked = onSignOutClicked
+    ) {
         Scaffold(
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
             topBar = {
@@ -111,6 +117,7 @@ fun HomeScreen(
 fun NavigationDrawer(
     drawerState: DrawerState,
     onSignOutClicked: () -> Unit,
+    onDeleteAllClicked: () -> Unit,
     content: @Composable () -> Unit
 ) {
     ModalNavigationDrawer(
@@ -134,12 +141,29 @@ fun NavigationDrawer(
                             label = {
                                 Row(modifier = Modifier.padding(5.dp)) {
                                     Icon(
+                                        imageVector = Icons.Default.Delete,
+                                        contentDescription = "Delete All Icon"
+                                    )
+                                    Spacer(modifier = Modifier.width(12.dp))
+                                    Text(
+                                        text = "حذف تمام نوشته ها",
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                }
+                            },
+                            selected = false,
+                            onClick = onDeleteAllClicked
+                        )
+                        NavigationDrawerItem(
+                            label = {
+                                Row(modifier = Modifier.padding(5.dp)) {
+                                    Icon(
                                         imageVector = Icons.Default.AccountCircle,
                                         contentDescription = "Sign out Icon"
                                     )
-                                    Spacer(modifier = Modifier.width(10.dp))
+                                    Spacer(modifier = Modifier.width(12.dp))
                                     Text(
-                                        text = "خارج شوید",
+                                        text = "خارج شدن از اکانت",
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
                                 }
