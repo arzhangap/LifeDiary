@@ -43,6 +43,7 @@ import com.arzhang.lifediary.R
 import com.arzhang.lifediary.data.repository.Diaries
 import com.arzhang.lifediary.util.JustifiedRTLText
 import com.arzhang.lifediary.model.RequestState
+import java.time.ZonedDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -54,7 +55,10 @@ fun HomeScreen(
     onMenuClicked: () -> Unit,
     navigateToWrite: () -> Unit,
     navigateToWriteWithArgs: (String) -> Unit,
-    onDeleteAllClicked: () -> Unit
+    onDeleteAllClicked: () -> Unit,
+    dateIsSelected: Boolean,
+    onDateSelected: (ZonedDateTime) -> Unit,
+    onDateReset: () -> Unit
 ) {
     var padding by remember { mutableStateOf(PaddingValues()) }
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
@@ -66,7 +70,13 @@ fun HomeScreen(
         Scaffold(
             modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
             topBar = {
-                HomeTopBar(onMenuClicked = onMenuClicked, scrollBehavior = scrollBehavior)
+                HomeTopBar(
+                    onMenuClicked = onMenuClicked,
+                    scrollBehavior = scrollBehavior,
+                    dateIsSelected= dateIsSelected,
+                    onDateSelected= onDateSelected,
+                    onDateReset= onDateReset
+                )
             },
             floatingActionButton = {
                 FloatingActionButton(

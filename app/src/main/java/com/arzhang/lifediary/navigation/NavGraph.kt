@@ -161,6 +161,9 @@ fun NavGraphBuilder.homeRoute(
             },
             navigateToWrite = navigateToWrite,
             navigateToWriteWithArgs = navigateToWriteWithArgs,
+            dateIsSelected = viewModel.dateIsSelected,
+            onDateReset = {viewModel.getDiaries()},
+            onDateSelected = {viewModel.getDiaries(it)}
         )
 
         DisplayAlertDialog(
