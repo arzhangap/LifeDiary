@@ -2,9 +2,9 @@ package com.arzhang.lifediary.di
 
 import android.content.Context
 import androidx.room.Room
-import com.arzhang.lifediary.connectivity.NetworkConnectivityObserver
-import com.arzhang.lifediary.data.database.ImagesDatabase
-import com.arzhang.lifediary.util.Constants.IMAGES_DATABASE
+import com.arzhang.mongo.database.ImagesDatabase
+import com.arzhang.util.Constants.IMAGES_DATABASE
+import com.arzhang.util.connectivity.NetworkConnectivityObserver
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

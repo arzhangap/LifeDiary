@@ -9,12 +9,12 @@ plugins {
 
 android {
     namespace = "com.arzhang.lifediary"
-    compileSdk = 34
+    compileSdk = ProjectConfig.compileSdk
 
     defaultConfig {
         applicationId = "com.arzhang.lifediary"
-        minSdk = 24
-        targetSdk = 34
+        minSdk = ProjectConfig.minSdk
+        targetSdk = ProjectConfig.targetSdk
         versionCode = 1
         versionName = "1.0"
 
@@ -45,7 +45,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = ProjectConfig.extensionVersion
     }
     packaging {
         resources {
@@ -90,7 +90,6 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
 
     implementation(libs.kotlinx.coroutines.core)
-    implementation(libs.library.sync.v1110)
 
     implementation(libs.library.sync)
 
@@ -120,4 +119,12 @@ dependencies {
 
      // Desugar JDK
     coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    implementation(project(":core:ui"))
+    implementation(project(":core:util"))
+    implementation(project(":data:mongo"))
+
+    implementation(project(":feature:auth"))
+    implementation(project(":feature:home"))
+    implementation(project(":feature:write"))
 }

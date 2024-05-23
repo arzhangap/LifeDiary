@@ -28,6 +28,9 @@ roomCompiler = "2.6.1"
 googleServices = "4.4.1"
 firebaseAuth = "23.0.0"
 firebaseStorageKtx = "20.3.0"
+appcompat = "1.6.1"
+material = "1.12.0"
+material3 = "1.2.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -64,17 +67,19 @@ androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-man
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
-library-sync = { module = "io.realm.kotlin:library-sync", version.ref = "librarySync" }
-library-sync-v1110 = { module = "io.realm.kotlin:library-sync", version.ref = "librarySyncVersion" }
+library-sync= { module = "io.realm.kotlin:library-sync", version.ref = "librarySyncVersion" }
 maxkeppeler-calendar = { module = "com.maxkeppeler.sheets-compose-dialogs:calendar", version.ref = "core" }
 messagebarcompose = { module = "com.github.stevdza-san:messagebarcompose", version.ref = "messagebarcomposeVersion" }
 onetapcompose = { module = "com.github.stevdza-san:OneTapCompose", version.ref = "onetapcomposeVersion" }
 google-services = { group = "com.google.gms", name = "google-services", version.ref = "googleServices" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage-ktx", version.ref = "firebaseStorageKtx" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
